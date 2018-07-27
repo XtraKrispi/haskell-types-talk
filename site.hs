@@ -31,7 +31,6 @@ main = hakyll $ do
     route $ setExtension "html"
     compile
       $   pandocCompiler
-      >>= loadAndApplyTemplate "templates/childSlide.html" defaultContext
       >>= loadAndApplyTemplate "templates/default.html"    defaultContext
       >>= relativizeUrls
 
