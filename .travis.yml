@@ -16,6 +16,7 @@ language: generic
 
 # Caching so the next build will be fast too.
 cache:
+  timeout: 1800
   directories:
   - $HOME/.stack
 
@@ -42,6 +43,13 @@ script:
 branches:
   only:
   - master
+
+notifications:
+  email:
+    recipients:
+      - XtraKrispi@gmail.com
+    on_success: never # default: change
+    on_failure: always # default: always    
 
 deploy:
   provider: pages
