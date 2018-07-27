@@ -2,7 +2,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 import           Data.Semigroup                           ( (<>) )
 import           Data.List                                ( sortBy )
-import           System.FilePath                          ( takeFileName )
+import           System.FilePath                          ( takeFileName, takeExtension )
 import           Data.List.Split                          ( splitOn )
 import           Data.Binary                              ( Binary )
 import           Data.Typeable                            ( Typeable )
@@ -23,17 +23,19 @@ main = hakyll $ do
   match "slides/*" $ do
     route $ setExtension "html"
     compile
-      $   pandocCompiler
+      $   getResourceFilePath
+      >>= markdownOrHtmlCompiler
       >>= loadAndApplyTemplate "templates/default.html" defaultContext
       >>= relativizeUrls
-
+    
   match "slides/**/*" $ do
     route $ setExtension "html"
     compile
-      $   pandocCompiler
+      $   getResourceFilePath
+      >>= markdownOrHtmlCompiler
       >>= loadAndApplyTemplate "templates/default.html"    defaultContext
       >>= relativizeUrls
-
+    
 
   match "index.html" $ do
     route idRoute
@@ -52,6 +54,12 @@ main = hakyll $ do
 
 
 --------------------------------------------------------------------------------
+markdownOrHtmlCompiler :: FilePath -> Compiler (Item String)
+markdownOrHtmlCompiler fp = 
+  case takeExtension fp of
+    ".markdown" -> pandocCompiler
+    _           -> getResourceBody
+
 getChildren :: (Binary a, Typeable a, Show a) => Item a -> Compiler [Item a]
 getChildren (Item identifier _) = do
   let ord = parseIdentifier identifier
