@@ -1,14 +1,19 @@
----
-title: Home
----
-
-<h2>Welcome</h2>
-
-<p>Welcome to my blog!</p>
-
-<p>I've reproduced a list of recent posts here for your reading pleasure:</p>
-
-<h2>Posts</h2>
-$partial("templates/post-list.html")$
-
-<p>…or you can find more in the <a href="/archive.html">archives</a>.</p>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>Haskell Types</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/css/reveal.css">        
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/css/theme/moon.css">
+        <link rel="stylesheet" type="text/css" href="/css/default.css" />
+    </head>
+    <body>
+        $partial("templates/slides.html")$
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/js/reveal.js"></script>
+        <script>
+          Reveal.initialize();
+        </script>
+    </body>
+</html>

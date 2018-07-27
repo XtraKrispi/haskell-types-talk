@@ -17,5 +17,10 @@ executable haskell-types-talk
   main-is:             site.hs
   default-language:    Haskell2010
   ghc-options:         -threaded
+                       -Wall
+                       -Werror
   build-depends:       base >= 4.7 && < 5,
-                       hakyll
+                       hakyll,
+                       filepath,
+                       split,
+                       binary

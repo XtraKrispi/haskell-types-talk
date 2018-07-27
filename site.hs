@@ -1,68 +1,80 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
-import           Data.Monoid (mappend)
+import           Data.Semigroup                           ( (<>) )
+import           Data.List                                ( sortBy )
+import           System.FilePath                          ( takeFileName )
+import           Data.List.Split                          ( splitOn )
+import           Data.Binary                              ( Binary )
+import           Data.Typeable                            ( Typeable )
 import           Hakyll
 
 
 --------------------------------------------------------------------------------
 main :: IO ()
 main = hakyll $ do
-    match "images/*" $ do
-        route   idRoute
-        compile copyFileCompiler
+  match "images/*" $ do
+    route idRoute
+    compile copyFileCompiler
 
-    match "css/*" $ do
-        route   idRoute
-        compile compressCssCompiler
+  match "css/*" $ do
+    route idRoute
+    compile compressCssCompiler
 
-    match (fromList ["about.rst", "contact.markdown"]) $ do
-        route   $ setExtension "html"
-        compile $ pandocCompiler
-            >>= loadAndApplyTemplate "templates/default.html" defaultContext
-            >>= relativizeUrls
+  match "slides/*" $ do
+    route $ setExtension "html"
+    compile
+      $   pandocCompiler
+      >>= loadAndApplyTemplate "templates/default.html" defaultContext
+      >>= relativizeUrls
 
-    match "posts/*" $ do
-        route $ setExtension "html"
-        compile $ pandocCompiler
-            >>= loadAndApplyTemplate "templates/post.html"    postCtx
-            >>= loadAndApplyTemplate "templates/default.html" postCtx
-            >>= relativizeUrls
-
-    create ["archive.html"] $ do
-        route idRoute
-        compile $ do
-            posts <- recentFirst =<< loadAll "posts/*"
-            let archiveCtx =
-                    listField "posts" postCtx (return posts) `mappend`
-                    constField "title" "Archives"            `mappend`
-                    defaultContext
-
-            makeItem ""
-                >>= loadAndApplyTemplate "templates/archive.html" archiveCtx
-                >>= loadAndApplyTemplate "templates/default.html" archiveCtx
-                >>= relativizeUrls
+  match "slides/**/*" $ do
+    route $ setExtension "html"
+    compile
+      $   pandocCompiler
+      >>= loadAndApplyTemplate "templates/childSlide.html" defaultContext
+      >>= loadAndApplyTemplate "templates/default.html"    defaultContext
+      >>= relativizeUrls
 
 
-    match "index.html" $ do
-        route idRoute
-        compile $ do
-            posts <- recentFirst =<< loadAll "posts/*"
-            let indexCtx =
-                    listField "posts" postCtx (return posts) `mappend`
-                    constField "title" "Home"                `mappend`
-                    defaultContext
+  match "index.html" $ do
+    route idRoute
+    compile $ do
+      slides <- sortSlides <$> loadAll "slides/*"
+      debugCompiler $ "Slides: " ++ show slides
+      let indexCtx =
+            listField "slides" slideCtx (return slides) <> defaultContext
 
-            getResourceBody
-                >>= applyAsTemplate indexCtx
-                >>= loadAndApplyTemplate "templates/default.html" indexCtx
-                >>= relativizeUrls
+      getResourceBody
+        >>= applyAsTemplate indexCtx
+        >>= loadAndApplyTemplate "templates/default.html" indexCtx
+        >>= relativizeUrls
 
-    match "templates/*" $ compile templateCompiler
+  match "templates/*" $ compile templateCompiler
 
 
 --------------------------------------------------------------------------------
-postCtx :: Context String
-postCtx =
-    dateField "date" "%B %e, %Y" `mappend`
-    defaultContext
+getChildren :: (Binary a, Typeable a, Show a) => Item a -> Compiler [Item a]
+getChildren (Item identifier _) = do
+  let ord = parseIdentifier identifier
+  children <- sortSlides <$> loadAll (fromGlob $ "slides/" ++ show ord ++ "/*")
+  debugCompiler (show children)
+  return children
+
+slideCtx :: Context String
+slideCtx =
+  listFieldWith "childSlides" defaultContext getChildren <> defaultContext
+
+sortSlides :: [Item a] -> [Item a]
+sortSlides = sortBy
+  (\(Item id1 _) (Item id2 _) ->
+    compare (parseIdentifier id1) (parseIdentifier id2)
+  )
+
+parseIdentifier :: Identifier -> Int
+parseIdentifier identifier =
+  let parts = splitOn "-" $ takeFileName $ toFilePath identifier
+  in  case parts of
+        []      -> 0
+        (x : _) -> read x
+
 
