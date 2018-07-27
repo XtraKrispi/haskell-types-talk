@@ -42,5 +42,6 @@ script:
 deploy:
   provider: pages
   skip-cleanup: true
-  local-dir: "_site"   
+  local-dir: "_site"
+  github_token: $GITHUB_API_KEY # Set in travis-ci.org dashboard   
   
