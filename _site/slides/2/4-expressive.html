@@ -1,1 +1,16 @@
 <h1 id="expressive">Expressive</h1>
+<ul>
+<li>Focus on WHAT more than HOW</li>
+<li><p>Composition of small functions allows for greater readability</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb1-1" data-line-number="1">add x y <span class="fu">=</span> x <span class="fu">+</span> y</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">multiply x y <span class="fu">=</span> x <span class="fu">*</span> y</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">square x <span class="fu">=</span> x <span class="fu">*</span> x</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co">-- . is function composition, read this right to left</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="ot">doStuff ::</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">Int</span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7">doStuff <span class="fu">=</span> add <span class="dv">3</span> <span class="fu">.</span> multiply <span class="dv">5</span> <span class="fu">.</span> square <span class="fu">.</span> add <span class="dv">5</span></a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="ot">doStuffToList ::</span> [<span class="dt">Int</span>] <span class="ot">-&gt;</span> <span class="dt">Int</span></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10">doStuffToList <span class="fu">=</span> sum <span class="fu">.</span> map doStuff</a></code></pre></div></li>
+<li><p>Type system allows for enforcing of business logic</p></li>
+</ul>

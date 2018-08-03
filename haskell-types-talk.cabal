@@ -23,4 +23,5 @@ executable haskell-types-talk
                        hakyll,
                        filepath,
                        split,
-                       binary
+                       binary,
+                       pandoc

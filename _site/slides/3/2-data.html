@@ -1,0 +1,23 @@
+<h1 id="the-type-system">The Type System</h1>
+<h2 id="creating-types-with-data">Creating types with <code>data</code></h2>
+<ul>
+<li><code>data Foo = Foo Int</code> behaves almost exactly like <code>newtype</code> but the compiler does not strip away the wrapper
+<ul>
+<li><code>data Foo</code> introduces a <em>type constructor</em></li>
+<li><code>Foo Int</code> introduces a <em>data constructor</em></li>
+<li>The two constructors do not need to be the same
+<ul>
+<li><code>data Foo = Bar Int</code> is perfectly valid</li>
+</ul></li>
+</ul></li>
+<li><p><code>data</code> supports <em>records</em></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">data</span> <span class="dt">MyType</span> <span class="fu">=</span> <span class="dt">MyType</span> {<span class="ot"> fieldA ::</span> <span class="dt">Int</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">                     ,<span class="ot"> fieldB ::</span> <span class="dt">String</span> </a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">                     }</a></code></pre></div>
+<ul>
+<li><p><em>caveat</em>: records produce <strong>functions</strong> with the same names as the record fields</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb2-1" data-line-number="1">x <span class="fu">=</span> <span class="dt">MyType</span> { fieldA <span class="fu">=</span> <span class="dv">1</span>, fieldB <span class="fu">=</span> <span class="st">&quot;Test&quot;</span> }</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">y <span class="fu">=</span> fieldA x <span class="co">-- 1</span></a></code></pre></div>
+<p>This means that names can conflict, so watch the naming</p></li>
+</ul></li>
+</ul>

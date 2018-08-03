@@ -7,6 +7,7 @@ import           Data.List.Split                          ( splitOn )
 import           Data.Binary                              ( Binary )
 import           Data.Typeable                            ( Typeable )
 import           Hakyll
+import           Text.Pandoc
 
 
 --------------------------------------------------------------------------------
@@ -57,7 +58,7 @@ main = hakyll $ do
 markdownOrHtmlCompiler :: FilePath -> Compiler (Item String)
 markdownOrHtmlCompiler fp = 
   case takeExtension fp of
-    ".markdown" -> pandocCompiler
+    ".markdown" -> pandocCompilerWith (defaultHakyllReaderOptions{ readerExtensions = disableExtension Ext_smart pandocExtensions }) defaultHakyllWriterOptions
     _           -> getResourceBody
 
 getChildren :: (Binary a, Typeable a, Show a) => Item a -> Compiler [Item a]

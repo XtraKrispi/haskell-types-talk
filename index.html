@@ -7,13 +7,27 @@
         <title>Haskell Types</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/css/reveal.css">        
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/css/theme/moon.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/monokai.min.css">
         <link rel="stylesheet" type="text/css" href="/css/default.css" />
     </head>
     <body>
         $partial("templates/slides.html")$
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/haskell.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/js/reveal.js"></script>
         <script>
-          Reveal.initialize();
+          Reveal.initialize({
+            history: true,
+            // Flags whether to include the current fragment in the URL,
+            // so that reloading brings you to the same fragment position
+            fragmentInURL: true,
+            minScale: 0.1,
+            maxScale: 1,
+            center: false,
+            width: "100%",
+            height: "100%"
+          });
+          hljs.initHighlightingOnLoad();
         </script>
     </body>
 </html>

@@ -1,0 +1,28 @@
+<h1>The Type System</h1>
+<h2>Functions</h2>
+
+<p>Functions are defined with the following syntax:</p>
+<pre>
+  <code class="haskell">
+    add :: Int -> Int -> Int
+    add a b = a + b
+
+    map :: (a -> b) -> [a] -> [b]
+    map fn [] = []
+    map fn (x : xs) = fn x : map fn xs
+  </code>
+</pre>
+<p>Notice that functions can be passed as arguments as well</p>
+<p>This is also perfectly valid:</p>
+<pre>
+  <code class="haskell">
+    add a b = a + b
+
+    map fn [] = []
+    map fn (x:xs) = fn x : map fn xs
+  </code>
+</pre>
+<p>
+  Haskell has a very strong <em>type inference</em> engine that can figure out your 
+  types the vast majority of the time.
+</p>

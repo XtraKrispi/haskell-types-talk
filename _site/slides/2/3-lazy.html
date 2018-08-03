@@ -1,1 +1,11 @@
 <h1 id="lazy">Lazy</h1>
+<ul>
+<li>Nothing is evaluated until it is needed</li>
+<li>The compiler and run time can utilize laziness for performance</li>
+<li>Can make debugging difficult, and can sometimes cause performance issues</li>
+<li><p>Because of laziness, this is possible:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb1-1" data-line-number="1">  x <span class="fu">=</span> [<span class="dv">0</span>,<span class="dv">1</span><span class="fu">..</span>] <span class="co">-- Infinite list</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">  y <span class="fu">=</span> [<span class="ch">'a'</span>, <span class="ch">'b'</span>, <span class="ch">'c'</span>]</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">  indexed <span class="fu">=</span> zip x y </a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">  <span class="co">-- Produces [(0, 'a'), (1, 'b'), (2, 'c')]</span></a></code></pre></div></li>
+</ul>

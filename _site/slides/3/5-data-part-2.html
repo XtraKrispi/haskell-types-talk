@@ -1,0 +1,22 @@
+<h1 id="the-type-system">The Type System</h1>
+<h2 id="creating-types-with-data-part-2">Creating types with <code>data</code> (Part 2)</h2>
+<p>The most interesting use of <code>data</code> is for <strong>Abstract Data Types (ADTs)</strong></p>
+<p>ADTs (also called Union or Sum types) allow for multiple values for a type</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">data</span> <span class="dt">Shape</span> <span class="fu">=</span> <span class="dt">Rectangle</span> </a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">           <span class="fu">|</span> <span class="dt">Square</span> </a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">           <span class="fu">|</span> <span class="dt">Triangle</span> </a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">           <span class="fu">|</span> <span class="dt">Circle</span></a></code></pre></div>
+<p>This type has one <em>type constructor</em> <code>Shape</code> and four <em>data constructors</em> <code>Rectangle Square Triangle Circle</code></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="ot">  doSomething ::</span> <span class="dt">Shape</span> <span class="ot">-&gt;</span> <span class="dt">String</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">  <span class="fu">...</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">  doSomething <span class="dt">Circle</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">  doSomething <span class="dt">Rectangle</span></a></code></pre></div>
+<p>But wait, there's more! You can attach data to the individual constructors</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb3-1" data-line-number="1">  <span class="kw">data</span> <span class="dt">Shape</span> <span class="fu">=</span> <span class="dt">Rectangle</span> <span class="dt">Int</span> <span class="dt">Int</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">             <span class="fu">|</span> <span class="dt">Square</span> <span class="dt">Int</span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">             <span class="fu">|</span> <span class="dt">Triangle</span> <span class="dt">Int</span> <span class="dt">Int</span></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">             <span class="fu">|</span> <span class="dt">Circle</span> <span class="dt">Int</span></a></code></pre></div>
+<p>Now, when you create a type of <code>Shape</code>, you'll have to supply the right data</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb4-1" data-line-number="1">  x <span class="fu">=</span> <span class="dt">Rectangle</span> <span class="dv">1</span> <span class="dv">2</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">  y <span class="fu">=</span> <span class="dt">Square</span> <span class="dv">3</span></a></code></pre></div>
