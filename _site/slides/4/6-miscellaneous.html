@@ -1,0 +1,12 @@
+<h2 id="miscellaneous-cont.">Miscellaneous (cont.)</h2>
+<p>Functions in Haskell are expressions, meaning they can only have one statement in them</p>
+<p>There are helpers for making this easier to work with:</p>
+<pre class="language-haskell"><code>
+  angrify = helper &quot;test&quot;
+    where helper str = str ++ &quot;!&quot;
+
+  -- or 
+
+  angrify = let helper str = str ++ &quot;!&quot;
+            in helper &quot;test&quot;
+</code></pre>

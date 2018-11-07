@@ -4,20 +4,16 @@
 <p>Haskell has support for types parameterized on one or more other types</p>
 <p>
   <pre>
-    <code class="haskell">
+    <code class="language-haskell">
       data Maybe a = Nothing
                    | Just a
     </code>
   </pre>
   <p>This means that <code>Maybe</code> is parameterized on any type <code>a</code>, so <code>Maybe</code> acts as a 
-  container of sorts to a type <code>a</code>
+  container of sorts to a type <em>a</em>
   </p>
-  <p>Notice the <code>a</code> in the <code>Just</code> branch of the type
-  </p>
-  <p>
-    These are all valid:
     <pre>
-      <code class="haskell">
+      <code class="language-haskell">
         x = Just 5 -- Maybe Int
         y = Just True -- Maybe Bool
         z = Just "Hello" -- Maybe String
@@ -26,5 +22,4 @@
         bar :: Maybe Int -> Int
       </code>
     </pre>
-  </p>
 </p>

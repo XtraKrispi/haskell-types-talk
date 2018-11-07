@@ -155,7 +155,7 @@ data YetAnother = YetAnother Int</code></pre></li>
 <div class="fragment fade-in">
     <p>ADTs (also called Union or Sum types) allow for multiple values for a type</p>
     <pre>
-        <code class="haskell">
+        <code class="language-haskell">
             data Shape = Rectangle
                        | Square
                        | Triangle
@@ -174,7 +174,7 @@ data YetAnother = YetAnother Int</code></pre></li>
         <code class="fragment fade-in">Rectangle Square Triangle Circle</code>
     </p>
     <pre class="fragment fade-in">
-        <code class="haskell">
+        <code class="language-haskell">
             doSomething :: Shape -> String
             -- Function implementation hidden
             x = doSomething Circle
@@ -187,7 +187,7 @@ data YetAnother = YetAnother Int</code></pre></li>
 <h2 id="creating-types-with-data-part-3">Creating types with <code>data</code> (Part 3)</h2>
 <p class="fragment fade-in">But wait, there's more! You can attach data to the individual constructors</p>
 <pre class="fragment fade-in">
-  <code class="haskell">
+  <code class="language-haskell">
     data Shape = Rectangle Int Int
                | Square Int
                | Triangle Int Int
@@ -197,7 +197,7 @@ data YetAnother = YetAnother Int</code></pre></li>
 <p class="fragment fade-in">Now, when you create a type of
     <code>Shape</code>, you'll have to supply the right data</p>
 <pre class="fragment fade-in">
-  <code class="haskell">
+  <code class="language-haskell">
     x = Rectangle 1 2
     y = Square 3
   </code>
@@ -210,20 +210,16 @@ data YetAnother = YetAnother Int</code></pre></li>
 <p>Haskell has support for types parameterized on one or more other types</p>
 <p>
   <pre>
-    <code class="haskell">
+    <code class="language-haskell">
       data Maybe a = Nothing
                    | Just a
     </code>
   </pre>
   <p>This means that <code>Maybe</code> is parameterized on any type <code>a</code>, so <code>Maybe</code> acts as a 
-  container of sorts to a type <code>a</code>
+  container of sorts to a type <em>a</em>
   </p>
-  <p>Notice the <code>a</code> in the <code>Just</code> branch of the type
-  </p>
-  <p>
-    These are all valid:
     <pre>
-      <code class="haskell">
+      <code class="language-haskell">
         x = Just 5 -- Maybe Int
         y = Just True -- Maybe Bool
         z = Just "Hello" -- Maybe String
@@ -232,7 +228,6 @@ data YetAnother = YetAnother Int</code></pre></li>
         bar :: Maybe Int -> Int
       </code>
     </pre>
-  </p>
 </p></section>
     
       <section><h1>The Type System</h1>
@@ -240,7 +235,7 @@ data YetAnother = YetAnother Int</code></pre></li>
 
 <p>Parameterized types can have multiple types</p>
 <pre>
-  <code class="haskell">
+  <code class="language-haskell">
     data Either a b = Left  a
                     | Right b
   </code>
@@ -259,13 +254,15 @@ data YetAnother = YetAnother Int</code></pre></li>
 </p>
 </section>
     
+      <section><h2 id="common-built-in-types">Common built-in types</h2></section>
+    
   </section>
 
  
        
           <section>
     <section><h1 id="functions">Functions</h1>
-<h2 id="the-building-blocks-to-all-things-in-haskell-and-all-functional-languages">The building blocks to all things in Haskell (and all functional languages</h2></section>
+<h2 id="the-building-blocks-to-all-things-in-haskell-and-all-functional-languages">The building blocks to all things in Haskell (and all functional languages)</h2></section>
     
       <section><h2>Functions</h2>
 
@@ -294,6 +291,112 @@ data YetAnother = YetAnother Int</code></pre></li>
   Haskell has a very strong <em>type inference</em> engine that can figure out your 
   types the vast majority of the time.
 </p></section>
+    
+      <section><h2 id="currying">Currying</h2>
+<p>Functions in Haskell are <em>curried</em>, which means that in essence, every function takes a single parameter. You can see this in the type signature of a function:</p>
+<pre class="language-haskell"><code>  add :: Int -&gt; Int -&gt; Int -- Function application associates to the right
+
+  -- So this is equivalent
+  add :: Int -&gt; (Int -&gt; Int) -- This means add is the same as a function that
+                             -- given an Int will return a function that itself
+                             -- takes an Int as an argument</code></pre>
+<p>This is important because of what we can do with this knowledge, and Haskell abstracts that away for us.</p>
+<p>These are perfectly valid ways to call a function:</p>
+<pre class="language-haskell"><code>  add :: Int -&gt; Int -&gt; Int
+  add a b = a + b
+
+  x = add 1 2 -- returns 3
+
+  y = add 1   -- returns a new function Int -&gt; Int
+
+  z = add     -- returns a function Int -&gt; Int -&gt; Int</code></pre></section>
+    
+      <section><h2 id="partial-application">Partial Application</h2>
+<p>The benefits of currying are not immediately evident, but it can help to cut down on boilerplate code and increase expressiveness.</p>
+<p>Here is an example:</p>
+<pre class="language-haskell"><code>
+  -- Print out the base string appended by the number passed in
+  helper :: String -&gt; Int -&gt; String 
+  helper base num = base ++ &quot;: &quot; ++ show num -- show is basically a toString method...sort of
+
+  -- Verbose
+  convert :: [Int] -&gt; [String]
+  convert ids = map (\id -&gt; helper &quot;test&quot; id) ids
+
+  -- Taking advantage of partial application
+  convert :: [Int] -&gt; [String]
+  convert = map (helper &quot;test&quot;)
+</code></pre></section>
+    
+      <section><h2 id="composition">Composition</h2></section>
+    
+      <section><h2 id="miscellaneous-function-stuff">Miscellaneous function stuff</h2>
+<p>Binary functions (those that take two arguments) can also be called <em>infix</em> as an option:</p>
+<pre class="language-haskell"><code>  add :: Int -&gt; Int -&gt; Int
+
+  x = add 1 2 
+  
+  -- or
+  
+  y = 1 `add` 2</code></pre>
+<p>To avoid parentheses, Haskell provides the function application operator, which can make things more readable, since function application associates to the left</p>
+<pre class="language-haskell"><code>
+  add :: Int -&gt; Int -&gt; Int
+
+  main :: IO ()
+  main = putStrLn (show (add 1 2))
+
+  -- or
+
+  main :: IO ()
+  main = putStrLn $ show $ add 1 2
+</code></pre></section>
+    
+      <section><h2 id="miscellaneous-function-stuff-cont.">Miscellaneous Function Stuff (cont.)</h2>
+<p>Functions in Haskell are expressions, meaning they can only have one statement</p>
+<p>There are helpers for making this easier to work with:</p>
+<pre class="language-haskell"><code>
+  angrify = helper &quot;test&quot;
+    where helper str = str ++ &quot;!&quot;
+
+  -- or 
+
+  angrify = let helper str = str ++ &quot;!&quot;
+            in helper &quot;test&quot;
+</code></pre>
+<p>Separate clauses can chain:</p>
+<pre class="language-haskell"><code>  angrify = let toAppend = '!'
+                reallyAngry = replicate 5 toAppend
+                helper str = str ++ reallyAngry
+            in  helper &quot;test&quot;</code></pre></section>
+    
+  </section>
+
+ 
+       
+          <section>
+    <section><h1 id="typeclasses">Typeclasses</h1></section>
+    
+  </section>
+
+ 
+       
+          <section>
+    <section><h1 id="functors">Functors</h1></section>
+    
+  </section>
+
+ 
+       
+          <section>
+    <section><h1 id="applicative-functors">Applicative Functors</h1></section>
+    
+  </section>
+
+ 
+       
+          <section>
+    <section><h1 id="monads">Monads</h1></section>
     
   </section>
 

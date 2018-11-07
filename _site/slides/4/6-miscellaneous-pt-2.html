@@ -1,0 +1,17 @@
+<h2 id="miscellaneous-function-stuff-cont.">Miscellaneous Function Stuff (cont.)</h2>
+<p>Functions in Haskell are expressions, meaning they can only have one statement</p>
+<p>There are helpers for making this easier to work with:</p>
+<pre class="language-haskell"><code>
+  angrify = helper &quot;test&quot;
+    where helper str = str ++ &quot;!&quot;
+
+  -- or 
+
+  angrify = let helper str = str ++ &quot;!&quot;
+            in helper &quot;test&quot;
+</code></pre>
+<p>Separate clauses can chain:</p>
+<pre class="language-haskell"><code>  angrify = let toAppend = '!'
+                reallyAngry = replicate 5 toAppend
+                helper str = str ++ reallyAngry
+            in  helper &quot;test&quot;</code></pre>

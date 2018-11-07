@@ -1,0 +1,21 @@
+<h2 id="miscellaneous-function-stuff">Miscellaneous function stuff</h2>
+<p>Binary functions (those that take two arguments) can also be called <em>infix</em> as an option:</p>
+<pre class="language-haskell"><code>  add :: Int -&gt; Int -&gt; Int
+
+  x = add 1 2 
+  
+  -- or
+  
+  y = 1 `add` 2</code></pre>
+<p>To avoid parentheses, Haskell provides the function application operator, which can make things more readable, since function application associates to the left</p>
+<pre class="language-haskell"><code>
+  add :: Int -&gt; Int -&gt; Int
+
+  main :: IO ()
+  main = putStrLn (show (add 1 2))
+
+  -- or
+
+  main :: IO ()
+  main = putStrLn $ show $ add 1 2
+</code></pre>
