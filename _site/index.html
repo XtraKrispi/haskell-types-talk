@@ -6,7 +6,7 @@
         <title>Haskell Types</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/css/reveal.css">        
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/css/theme/moon.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/monokai.min.css">
+        <link rel="stylesheet" type="text/css" href="css/prism.css">
         <link rel="stylesheet" type="text/css" href="./css/default.css" />
     </head>
     <body>
@@ -14,7 +14,7 @@
   <div class="slides">
        
           <section>
-    <section><h1>Haskell Types</h1>
+    <section><h1>Intro to Haskell</h1>
 <h2>Or how I learned to stop worrying and love the compiler</h2>
 <img src="images/Haskell-Logo.svg" style="margin:0; background:0;border:0;box-shadow:0" /></section>
     
@@ -27,8 +27,8 @@
 
 <h2 class="fragment fade-in">Functional</h2>
 <h2 class="fragment fade-in">Pure</h2>
-<h2 class="fragment fade-in">Lazy</h2>
 <h2 class="fragment fade-in">Expressive</h2>
+<h2 class="fragment fade-in">Lazy</h2>
 <h2 class="fragment fade-in">SCARY???</h2></section>
     
       <section><h1 id="functional">Functional</h1>
@@ -46,33 +46,33 @@
 <li>A given input will always yield the same output</li>
 </ul></section>
     
+      <section><h1 id="expressive">Expressive</h1>
+<ul>
+<li>Focus on WHAT more than HOW</li>
+<li><p>Composition of small functions allows for greater readability</p>
+<pre class="language-haskell"><code>add x y = x + y
+multiply x y = x * y
+square x = x * x
+
+-- . is function composition, read this right to left
+doStuff :: Int -&gt; Int
+doStuff = add 3 . multiply 5 . square . add 5
+
+doStuffToList :: [Int] -&gt; Int
+doStuffToList = sum . map doStuff</code></pre></li>
+<li><p>Type system allows for enforcing of business logic</p></li>
+</ul></section>
+    
       <section><h1 id="lazy">Lazy</h1>
 <ul>
 <li>Nothing is evaluated until it is needed</li>
 <li>The compiler and run time can utilize laziness for performance</li>
 <li>Can make debugging difficult, and can sometimes cause performance issues</li>
 <li><p>Because of laziness, this is possible:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb1-1" data-line-number="1">  x <span class="fu">=</span> [<span class="dv">0</span>,<span class="dv">1</span><span class="fu">..</span>] <span class="co">-- Infinite list</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">  y <span class="fu">=</span> [<span class="ch">'a'</span>, <span class="ch">'b'</span>, <span class="ch">'c'</span>]</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">  indexed <span class="fu">=</span> zip x y </a>
-<a class="sourceLine" id="cb1-4" data-line-number="4">  <span class="co">-- Produces [(0, 'a'), (1, 'b'), (2, 'c')]</span></a></code></pre></div></li>
-</ul></section>
-    
-      <section><h1 id="expressive">Expressive</h1>
-<ul>
-<li>Focus on WHAT more than HOW</li>
-<li><p>Composition of small functions allows for greater readability</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb1-1" data-line-number="1">add x y <span class="fu">=</span> x <span class="fu">+</span> y</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">multiply x y <span class="fu">=</span> x <span class="fu">*</span> y</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">square x <span class="fu">=</span> x <span class="fu">*</span> x</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co">-- . is function composition, read this right to left</span></a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="ot">doStuff ::</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">Int</span></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7">doStuff <span class="fu">=</span> add <span class="dv">3</span> <span class="fu">.</span> multiply <span class="dv">5</span> <span class="fu">.</span> square <span class="fu">.</span> add <span class="dv">5</span></a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="ot">doStuffToList ::</span> [<span class="dt">Int</span>] <span class="ot">-&gt;</span> <span class="dt">Int</span></a>
-<a class="sourceLine" id="cb1-10" data-line-number="10">doStuffToList <span class="fu">=</span> sum <span class="fu">.</span> map doStuff</a></code></pre></div></li>
-<li><p>Type system allows for enforcing of business logic</p></li>
+<pre class="language-haskell"><code>  x = [0,1..] -- Infinite list
+  y = ['a', 'b', 'c']
+  indexed = zip x y 
+  -- Produces [(0, 'a'), (1, 'b'), (2, 'c')]</code></pre></li>
 </ul></section>
     
       <section><h1 id="scary">Scary???</h1>
@@ -80,7 +80,7 @@
 <ul>
 <li>Haskell has terminology and structure rooted in mathematics.</li>
 <li>There is a learning curve because math.</li>
-<li>You do not need to know math to use Haskell.</li>
+<li>But you do not need to know math to use Haskell.</li>
 <li>Some terminology can sound scary but can be explained simply.</li>
 <li>Most of the advanced data structures are not necessary for most use.</li>
 </ul></section>
@@ -259,28 +259,35 @@ data YetAnother = YetAnother Int</code></pre></li>
 </p>
 </section>
     
-      <section><h1>The Type System</h1>
-<h2>Functions</h2>
+  </section>
+
+ 
+       
+          <section>
+    <section><h1 id="functions">Functions</h1>
+<h2 id="the-building-blocks-to-all-things-in-haskell-and-all-functional-languages">The building blocks to all things in Haskell (and all functional languages</h2></section>
+    
+      <section><h2>Functions</h2>
 
 <p>Functions are defined with the following syntax:</p>
-<pre>
-  <code class="haskell">
+<pre class="language-haskell">
+  <code class="language-haskell">
     add :: Int -> Int -> Int
     add a b = a + b
-
-    map :: (a -> b) -> [a] -> [b]
-    map fn [] = []
-    map fn (x : xs) = fn x : map fn xs
+   
+    myMap :: (a -> b) -> [a] -> [b]
+    myMap fn [] = []
+    myMap fn (x : xs) = fn x : myMap fn xs
   </code>
 </pre>
 <p>Notice that functions can be passed as arguments as well</p>
 <p>This is also perfectly valid:</p>
-<pre>
-  <code class="haskell">
+<pre class="language-haskell">
+  <code class="language-haskell">
     add a b = a + b
 
-    map fn [] = []
-    map fn (x:xs) = fn x : map fn xs
+    myMap fn [] = []
+    myMap fn (x:xs) = fn x : myMap fn xs
   </code>
 </pre>
 <p>
@@ -296,8 +303,7 @@ data YetAnother = YetAnother Int</code></pre></li>
 </div>
 
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/haskell.min.js"></script>
+        <script src="js/prism.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/js/reveal.js"></script>
         <script>
           Reveal.initialize({
@@ -311,7 +317,6 @@ data YetAnother = YetAnother Int</code></pre></li>
             width: "100%",
             height: "100%"
           });
-          hljs.initHighlightingOnLoad();
         </script>
     </body>
 </html>

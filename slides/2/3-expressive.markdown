@@ -3,7 +3,7 @@
 * Focus on WHAT more than HOW
 * Composition of small functions allows for greater readability
 
-  ```haskell
+  ``` language-haskell
   add x y = x + y
   multiply x y = x * y
   square x = x * x

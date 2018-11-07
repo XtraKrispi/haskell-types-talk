@@ -5,7 +5,7 @@
 * Can make debugging difficult, and can sometimes cause performance issues
 * Because of laziness, this is possible:
   
-    ``` haskell
+    ``` language-haskell
       x = [0,1..] -- Infinite list
       y = ['a', 'b', 'c']
       indexed = zip x y 
