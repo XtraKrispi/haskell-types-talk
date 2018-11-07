@@ -1,0 +1,25 @@
+<h1>The Type System</h1>
+<h2>Parameterized Types</h2>
+
+<p>Haskell has support for types parameterized on one or more other types</p>
+<p>
+  <pre>
+    <code class="language-haskell">
+      data Maybe a = Nothing
+                   | Just a
+    </code>
+  </pre>
+  <p>This means that <code>Maybe</code> is parameterized on any type <code>a</code>, so <code>Maybe</code> acts as a 
+  container of sorts to a type <em>a</em>
+  </p>
+    <pre>
+      <code class="language-haskell">
+        x = Just 5 -- Maybe Int
+        y = Just True -- Maybe Bool
+        z = Just "Hello" -- Maybe String
+
+        foo :: Maybe a -> String
+        bar :: Maybe Int -> Int
+      </code>
+    </pre>
+</p>

@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>Haskell Types</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/css/reveal.css">        
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/css/theme/moon.css">
+        <link rel="stylesheet" type="text/css" href="css/prism.css">
+        <link rel="stylesheet" type="text/css" href="./css/default.css" />
+    </head>
+    <body>
+        <div class="reveal">
+  <div class="slides">
+       
+          <section>
+    <section><h1>Intro to Haskell</h1>
+<h2>Or how I learned to stop worrying and love the compiler</h2>
+<img src="images/Haskell-Logo.svg" style="margin:0; background:0;border:0;box-shadow:0" /></section>
+    
+  </section>
+
+ 
+       
+          <section>
+    <section><h1>What is Haskell?</h1>
+
+<h2 class="fragment fade-in">Functional</h2>
+<h2 class="fragment fade-in">Pure</h2>
+<h2 class="fragment fade-in">Expressive</h2>
+<h2 class="fragment fade-in">Lazy</h2>
+<h2 class="fragment fade-in">SCARY???</h2></section>
+    
+      <section><h1 id="functional">Functional</h1>
+<ul>
+<li>There are no objects in Haskell</li>
+<li>Everything is done by executing functions and passing data around</li>
+<li>Functions are first class citizens, treated as data</li>
+</ul></section>
+    
+      <section><h1 id="pure">Pure</h1>
+<ul>
+<li>Side effect free</li>
+<li>Referential transparency is a thing</li>
+<li>Much easier to test pure code</li>
+<li>A given input will always yield the same output</li>
+</ul></section>
+    
+      <section><h1 id="expressive">Expressive</h1>
+<ul>
+<li>Focus on WHAT more than HOW</li>
+<li><p>Composition of small functions allows for greater readability</p>
+<pre class="language-haskell"><code>add x y = x + y
+multiply x y = x * y
+square x = x * x
+
+-- . is function composition, read this right to left
+doStuff :: Int -&gt; Int
+doStuff = add 3 . multiply 5 . square . add 5
+
+doStuffToList :: [Int] -&gt; Int
+doStuffToList = sum . map doStuff</code></pre></li>
+<li><p>Type system allows for enforcing of business logic</p></li>
+</ul></section>
+    
+      <section><h1 id="lazy">Lazy</h1>
+<ul>
+<li>Nothing is evaluated until it is needed</li>
+<li>The compiler and run time can utilize laziness for performance</li>
+<li>Can make debugging difficult, and can sometimes cause performance issues</li>
+<li><p>Because of laziness, this is possible:</p>
+<pre class="language-haskell"><code>  x = [0,1..] -- Infinite list
+  y = ['a', 'b', 'c']
+  indexed = zip x y 
+  -- Produces [(0, 'a'), (1, 'b'), (2, 'c')]</code></pre></li>
+</ul></section>
+    
+      <section><h1 id="scary">Scary???</h1>
+<h2 id="haskell-is-not-scary.">Haskell is not scary.</h2>
+<ul>
+<li>Haskell has terminology and structure rooted in mathematics.</li>
+<li>There is a learning curve because math.</li>
+<li>But you do not need to know math to use Haskell.</li>
+<li>Some terminology can sound scary but can be explained simply.</li>
+<li>Most of the advanced data structures are not necessary for most use.</li>
+</ul></section>
+    
+  </section>
+
+ 
+       
+          <section>
+    <section><h1 id="the-type-system">The Type System</h1>
+<h2 id="basic-types">Basic Types</h2>
+<ul>
+<li><strong>Int</strong></li>
+<li><strong>Char</strong></li>
+<li><strong>Float</strong></li>
+<li><strong>Double</strong></li>
+<li><strong>Integer</strong> - Unbounded integers, overflows not possible</li>
+<li><strong>Bool</strong></li>
+</ul></section>
+    
+      <section><h1 id="the-type-system">The Type System</h1>
+<h2 id="user-defined-types">User Defined Types</h2>
+<ul>
+<li><p>Three ways to define types (note, these are <strong>not</strong> classes):</p>
+<pre><code>type MyType = Int
+newtype MyOtherType = MyOtherType Int
+data YetAnother = YetAnother Int</code></pre></li>
+<li>The <code>type</code> keyword defines an alias for a type
+<ul>
+<li>Can be used interchangeably</li>
+<li><code>Int</code> equals <code>MyType</code></li>
+</ul></li>
+<li><code>newtype</code> defines a single type alias, with compiler enforcement
+<ul>
+<li><code>Int</code> does <strong>not</strong> equal <code>MyOtherType</code></li>
+<li>Compiler removes the wrapping of the type so there is no overhead</li>
+</ul></li>
+<li><p><code>data</code> is the most interesting way to create types...</p></li>
+</ul></section>
+    
+      <section><h1 id="the-type-system">The Type System</h1>
+<h2 id="creating-types-with-data">Creating types with <code>data</code></h2>
+<ul>
+<li><code>data Foo = Foo Int</code> behaves almost exactly like <code>newtype</code> but the compiler does not strip away the wrapper
+<ul>
+<li><code>data Foo</code> introduces a <em>type constructor</em></li>
+<li><code>Foo Int</code> introduces a <em>data constructor</em></li>
+<li>The two constructors do not need to be the same
+<ul>
+<li><code>data Foo = Bar Int</code> is perfectly valid</li>
+</ul></li>
+</ul></li>
+<li><p><code>data</code> supports <em>records</em></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">data</span> <span class="dt">MyType</span> <span class="fu">=</span> <span class="dt">MyType</span> {<span class="ot"> fieldA ::</span> <span class="dt">Int</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">                     ,<span class="ot"> fieldB ::</span> <span class="dt">String</span> </a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">                     }</a></code></pre></div>
+<ul>
+<li><p><em>caveat</em>: records produce <strong>functions</strong> with the same names as the record fields</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb2-1" data-line-number="1">x <span class="fu">=</span> <span class="dt">MyType</span> { fieldA <span class="fu">=</span> <span class="dv">1</span>, fieldB <span class="fu">=</span> <span class="st">&quot;Test&quot;</span> }</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">y <span class="fu">=</span> fieldA x <span class="co">-- 1</span></a></code></pre></div>
+<p>This means that names can conflict, so watch the naming</p></li>
+</ul></li>
+</ul></section>
+    
+      <section><h1 id="the-type-system">The Type System</h1>
+<h2 id="creating-types-with-data-part-2">Creating types with
+    <code>data</code> (Part 2)</h2>
+<p class="fragment fade-in">The most interesting use of
+    <code>data</code> is for
+    <strong>Abstract Data Types (ADTs)</strong>
+</p>
+<div class="fragment fade-in">
+    <p>ADTs (also called Union or Sum types) allow for multiple values for a type</p>
+    <pre>
+        <code class="language-haskell">
+            data Shape = Rectangle
+                       | Square
+                       | Triangle
+                       | Circle
+        </code>
+    </pre>
+</div>
+<div class="fragment fade-in">
+    <p>
+        This type has one
+        <em>type constructor</em>
+        <code class="fragment fade-in">Shape</code> 
+        <span class="fragment fade-in">and four
+        <em>data constructors</em>
+        </span>
+        <code class="fragment fade-in">Rectangle Square Triangle Circle</code>
+    </p>
+    <pre class="fragment fade-in">
+        <code class="language-haskell">
+            doSomething :: Shape -> String
+            -- Function implementation hidden
+            x = doSomething Circle
+            y = doSomething Rectangle
+        </code>
+    </pre>
+</div></section>
+    
+      <section><h1 id="the-type-system">The Type System</h1>
+<h2 id="creating-types-with-data-part-3">Creating types with <code>data</code> (Part 3)</h2>
+<p class="fragment fade-in">But wait, there's more! You can attach data to the individual constructors</p>
+<pre class="fragment fade-in">
+  <code class="language-haskell">
+    data Shape = Rectangle Int Int
+               | Square Int
+               | Triangle Int Int
+               | Circle Int
+  </code>
+</pre>
+<p class="fragment fade-in">Now, when you create a type of
+    <code>Shape</code>, you'll have to supply the right data</p>
+<pre class="fragment fade-in">
+  <code class="language-haskell">
+    x = Rectangle 1 2
+    y = Square 3
+  </code>
+</pre>
+</section>
+    
+      <section><h1>The Type System</h1>
+<h2>Parameterized Types</h2>
+
+<p>Haskell has support for types parameterized on one or more other types</p>
+<p>
+  <pre>
+    <code class="language-haskell">
+      data Maybe a = Nothing
+                   | Just a
+    </code>
+  </pre>
+  <p>This means that <code>Maybe</code> is parameterized on any type <code>a</code>, so <code>Maybe</code> acts as a 
+  container of sorts to a type <em>a</em>
+  </p>
+    <pre>
+      <code class="language-haskell">
+        x = Just 5 -- Maybe Int
+        y = Just True -- Maybe Bool
+        z = Just "Hello" -- Maybe String
+
+        foo :: Maybe a -> String
+        bar :: Maybe Int -> Int
+      </code>
+    </pre>
+</p></section>
+    
+      <section><h1>The Type System</h1>
+<h2>Parameterized Types (Part 2)</h2>
+
+<p>Parameterized types can have multiple types</p>
+<pre>
+  <code class="language-haskell">
+    data Either a b = Left  a
+                    | Right b
+  </code>
+</pre>
+<p>
+  This means that <code>Either</code> is parameterized on two types, <code>a</code> and <code>b</code>,
+  which don't have to be the same type (hence the different letters).  
+</p>
+<p>
+  The actual letters or words used to denote the type
+  don't matter, as long as they are lowercase.
+</p>
+<p>
+  <strong><em>NOTE:</em></strong> Types <strong>MUST</strong> start with a capital, and generic types, functions and values 
+  must start with a lowercase letter.
+</p>
+</section>
+    
+      <section><h2 id="common-built-in-types">Common built-in types</h2></section>
+    
+  </section>
+
+ 
+       
+          <section>
+    <section><h1 id="functions">Functions</h1>
+<h2 id="the-building-blocks-to-all-things-in-haskell-and-all-functional-languages">The building blocks to all things in Haskell (and all functional languages)</h2></section>
+    
+      <section><h2>Functions</h2>
+
+<p>Functions are defined with the following syntax:</p>
+<pre class="language-haskell">
+  <code class="language-haskell">
+    add :: Int -> Int -> Int
+    add a b = a + b
+   
+    myMap :: (a -> b) -> [a] -> [b]
+    myMap fn [] = []
+    myMap fn (x : xs) = fn x : myMap fn xs
+  </code>
+</pre>
+<p>Notice that functions can be passed as arguments as well</p>
+<p>This is also perfectly valid:</p>
+<pre class="language-haskell">
+  <code class="language-haskell">
+    add a b = a + b
+
+    myMap fn [] = []
+    myMap fn (x:xs) = fn x : myMap fn xs
+  </code>
+</pre>
+<p>
+  Haskell has a very strong <em>type inference</em> engine that can figure out your 
+  types the vast majority of the time.
+</p></section>
+    
+      <section><h2 id="currying">Currying</h2>
+<p>Functions in Haskell are <em>curried</em>, which means that in essence, every function takes a single parameter. You can see this in the type signature of a function:</p>
+<pre class="language-haskell"><code>  add :: Int -&gt; Int -&gt; Int -- Function application associates to the right
+
+  -- So this is equivalent
+  add :: Int -&gt; (Int -&gt; Int) -- This means add is the same as a function that
+                             -- given an Int will return a function that itself
+                             -- takes an Int as an argument</code></pre>
+<p>This is important because of what we can do with this knowledge, and Haskell abstracts that away for us.</p>
+<p>These are perfectly valid ways to call a function:</p>
+<pre class="language-haskell"><code>  add :: Int -&gt; Int -&gt; Int
+  add a b = a + b
+
+  x = add 1 2 -- returns 3
+
+  y = add 1   -- returns a new function Int -&gt; Int
+
+  z = add     -- returns a function Int -&gt; Int -&gt; Int</code></pre></section>
+    
+      <section><h2 id="partial-application">Partial Application</h2>
+<p>The benefits of currying are not immediately evident, but it can help to cut down on boilerplate code and increase expressiveness.</p>
+<p>Here is an example:</p>
+<pre class="language-haskell"><code>
+  -- Print out the base string appended by the number passed in
+  helper :: String -&gt; Int -&gt; String 
+  helper base num = base ++ &quot;: &quot; ++ show num -- show is basically a toString method...sort of
+
+  -- Verbose
+  convert :: [Int] -&gt; [String]
+  convert ids = map (\id -&gt; helper &quot;test&quot; id) ids
+
+  -- Taking advantage of partial application
+  convert :: [Int] -&gt; [String]
+  convert = map (helper &quot;test&quot;)
+</code></pre></section>
+    
+      <section><h2 id="composition">Composition</h2></section>
+    
+      <section><h2 id="miscellaneous-function-stuff">Miscellaneous function stuff</h2>
+<p>Binary functions (those that take two arguments) can also be called <em>infix</em> as an option:</p>
+<pre class="language-haskell"><code>  add :: Int -&gt; Int -&gt; Int
+
+  x = add 1 2 
+  
+  -- or
+  
+  y = 1 `add` 2</code></pre>
+<p>To avoid parentheses, Haskell provides the function application operator, which can make things more readable, since function application associates to the left</p>
+<pre class="language-haskell"><code>
+  add :: Int -&gt; Int -&gt; Int
+
+  main :: IO ()
+  main = putStrLn (show (add 1 2))
+
+  -- or
+
+  main :: IO ()
+  main = putStrLn $ show $ add 1 2
+</code></pre></section>
+    
+      <section><h2 id="miscellaneous-function-stuff-cont.">Miscellaneous Function Stuff (cont.)</h2>
+<p>Functions in Haskell are expressions, meaning they can only have one statement</p>
+<p>There are helpers for making this easier to work with:</p>
+<pre class="language-haskell"><code>
+  angrify = helper &quot;test&quot;
+    where helper str = str ++ &quot;!&quot;
+
+  -- or 
+
+  angrify = let helper str = str ++ &quot;!&quot;
+            in helper &quot;test&quot;
+</code></pre>
+<p>Separate clauses can chain:</p>
+<pre class="language-haskell"><code>  angrify = let toAppend = '!'
+                reallyAngry = replicate 5 toAppend
+                helper str = str ++ reallyAngry
+            in  helper &quot;test&quot;</code></pre></section>
+    
+  </section>
+
+ 
+       
+          <section>
+    <section><h1 id="typeclasses">Typeclasses</h1></section>
+    
+  </section>
+
+ 
+       
+          <section>
+    <section><h1 id="functors">Functors</h1></section>
+    
+  </section>
+
+ 
+       
+          <section>
+    <section><h1 id="applicative-functors">Applicative Functors</h1></section>
+    
+  </section>
+
+ 
+       
+          <section>
+    <section><h1 id="monads">Monads</h1></section>
+    
+  </section>
+
+ 
+      
+  </div>
+</div>
+
+
+        <script src="js/prism.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/js/reveal.js"></script>
+        <script>
+          Reveal.initialize({
+            history: true,
+            // Flags whether to include the current fragment in the URL,
+            // so that reloading brings you to the same fragment position
+            fragmentInURL: true,
+            minScale: 0.1,
+            maxScale: 1,
+            center: false,
+            width: "100%",
+            height: "100%"
+          });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,37 @@
+<h1 id="the-type-system">The Type System</h1>
+<h2 id="creating-types-with-data-part-2">Creating types with
+    <code>data</code> (Part 2)</h2>
+<p class="fragment fade-in">The most interesting use of
+    <code>data</code> is for
+    <strong>Abstract Data Types (ADTs)</strong>
+</p>
+<div class="fragment fade-in">
+    <p>ADTs (also called Union or Sum types) allow for multiple values for a type</p>
+    <pre>
+        <code class="language-haskell">
+            data Shape = Rectangle
+                       | Square
+                       | Triangle
+                       | Circle
+        </code>
+    </pre>
+</div>
+<div class="fragment fade-in">
+    <p>
+        This type has one
+        <em>type constructor</em>
+        <code class="fragment fade-in">Shape</code> 
+        <span class="fragment fade-in">and four
+        <em>data constructors</em>
+        </span>
+        <code class="fragment fade-in">Rectangle Square Triangle Circle</code>
+    </p>
+    <pre class="fragment fade-in">
+        <code class="language-haskell">
+            doSomething :: Shape -> String
+            -- Function implementation hidden
+            x = doSomething Circle
+            y = doSomething Rectangle
+        </code>
+    </pre>
+</div>

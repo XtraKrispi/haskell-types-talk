@@ -1,0 +1,22 @@
+<h1>The Type System</h1>
+<h2>Parameterized Types (Part 2)</h2>
+
+<p>Parameterized types can have multiple types</p>
+<pre>
+  <code class="language-haskell">
+    data Either a b = Left  a
+                    | Right b
+  </code>
+</pre>
+<p>
+  This means that <code>Either</code> is parameterized on two types, <code>a</code> and <code>b</code>,
+  which don't have to be the same type (hence the different letters).  
+</p>
+<p>
+  The actual letters or words used to denote the type
+  don't matter, as long as they are lowercase.
+</p>
+<p>
+  <strong><em>NOTE:</em></strong> Types <strong>MUST</strong> start with a capital, and generic types, functions and values 
+  must start with a lowercase letter.
+</p>

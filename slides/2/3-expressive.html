@@ -1,0 +1,16 @@
+<h1 id="expressive">Expressive</h1>
+<ul>
+<li>Focus on WHAT more than HOW</li>
+<li><p>Composition of small functions allows for greater readability</p>
+<pre class="language-haskell"><code>add x y = x + y
+multiply x y = x * y
+square x = x * x
+
+-- . is function composition, read this right to left
+doStuff :: Int -&gt; Int
+doStuff = add 3 . multiply 5 . square . add 5
+
+doStuffToList :: [Int] -&gt; Int
+doStuffToList = sum . map doStuff</code></pre></li>
+<li><p>Type system allows for enforcing of business logic</p></li>
+</ul>

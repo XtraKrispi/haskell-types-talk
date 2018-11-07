@@ -1,0 +1,19 @@
+<h1 id="the-type-system">The Type System</h1>
+<h2 id="user-defined-types">User Defined Types</h2>
+<ul>
+<li><p>Three ways to define types (note, these are <strong>not</strong> classes):</p>
+<pre><code>type MyType = Int
+newtype MyOtherType = MyOtherType Int
+data YetAnother = YetAnother Int</code></pre></li>
+<li>The <code>type</code> keyword defines an alias for a type
+<ul>
+<li>Can be used interchangeably</li>
+<li><code>Int</code> equals <code>MyType</code></li>
+</ul></li>
+<li><code>newtype</code> defines a single type alias, with compiler enforcement
+<ul>
+<li><code>Int</code> does <strong>not</strong> equal <code>MyOtherType</code></li>
+<li>Compiler removes the wrapping of the type so there is no overhead</li>
+</ul></li>
+<li><p><code>data</code> is the most interesting way to create types...</p></li>
+</ul>
